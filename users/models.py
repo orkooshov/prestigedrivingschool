@@ -14,4 +14,12 @@ class User(AbstractUser):
         choices=Gender.choices, blank=True)
     photo = models.ImageField(_('Avatar'), width_field=300, height_field=300, 
         blank=True)
+    
+    def get_short_name(self) -> str:
+        return f'{self.last_name} {self.first_name}'
 
+    def get_full_name(self) -> str:
+        return f'{self.last_name} {self.first_name} {self.middle_name}'
+
+    def __str__(self) -> str:
+        return self.username

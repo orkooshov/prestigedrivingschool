@@ -19,23 +19,38 @@ class Weekday(models.IntegerChoices):
 class Cabinet(models.Model):
     cabinet = models.CharField(_('cabinet'), max_length=31)
 
+    def __str__(self) -> str:
+        return self.cabinet
+
 
 class Tutor(models.Model):
     cabinet = models.ForeignKey(Cabinet, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f'{self.user.get_full_name()}'
 
 
 class Group(models.Model):
     tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE)
     name = models.CharField(max_length=31)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class TopicTheory(models.Model):
     name = models.CharField(max_length=127)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class TopicPractice(models.Model):
     name = models.CharField(max_length=127)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class LessonTheory(models.Model):
@@ -53,9 +68,15 @@ class ScheduleTheory(models.Model):
 class CarBrand(models.Model):
     name = models.CharField(max_length=127)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class CarModel(models.Model):
     name = models.CharField(max_length=127)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class CarTransmission(models.IntegerChoices):
@@ -69,10 +90,16 @@ class Car(models.Model):
     transmission = models.IntegerField(choices=CarTransmission.choices)
     state_number = models.CharField(max_length=15)
 
+    def __str__(self) -> str:
+        return self.state_number
+
 
 class Instructor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.user.get_full_name()
 
 
 class LicenseCategory(models.TextChoices):
