@@ -1,5 +1,6 @@
 from django.contrib import admin
 from . import models as m
+from django.utils.translation import gettext as _
 
 
 class CabinetAdmin(admin.ModelAdmin):
@@ -17,37 +18,50 @@ class GroupAdmin(admin.ModelAdmin):
 class TopicTheoryAdmin(admin.ModelAdmin):
     exclude = ('id', )
 
+
 class TopicPracticeAdmin(admin.ModelAdmin):
     exclude = ('id', )
+
 
 class LessonTheoryAdmin(admin.ModelAdmin):
     exclude = ('id', )
 
+
 class ScheduleTheoryAdmin(admin.ModelAdmin):
     exclude = ('id', )
+
 
 class CarBrandAdmin(admin.ModelAdmin):
     exclude = ('id', )
 
+
 class CarModelAdmin(admin.ModelAdmin):
     exclude = ('id', )
+
 
 class CarTransmissionAdmin(admin.ModelAdmin):
     exclude = ('id', )
 
+
 class CarAdmin(admin.ModelAdmin):
     exclude = ('id', )
+
+
 class InstructorAdmin(admin.ModelAdmin):
     exclude = ('id', )
+
 
 class StudentAdmin(admin.ModelAdmin):
     exclude = ('id', )
 
+
 class SchedulePracticeAdmin(admin.ModelAdmin):
     exclude = ('id', )
 
+
 class LessonPracticeAdmin(admin.ModelAdmin):
     exclude = ('id', )
+
 
 admin.site.register(m.Cabinet, CabinetAdmin)
 admin.site.register(m.Tutor, TutorAdmin)
