@@ -199,3 +199,21 @@ class LessonPractice(models.Model):
     class Meta:
         verbose_name = 'Занятие практическое'
         verbose_name_plural = 'Занятия практические'
+
+
+class MarkDictionary(models.IntegerChoices):
+    A = 5, 'Отлично'
+    B = 4, 'Хорошо'
+    C = 3, 'Удовлетворительно'
+    D = 2, 'Неудовлетворительно'
+    E = 1, 'Кол'
+
+
+class Mark(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE,
+        verbose_name='Обучающийся')
+    mark = models.IntegerField(choices=MarkDictionary.choices,
+        verbose_name='Оценка')
+    created_at = models.DateTimeField(auto_now_add=True, 
+        verbose_name='Поставлена')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Изменена')
