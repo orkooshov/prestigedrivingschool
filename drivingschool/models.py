@@ -217,3 +217,7 @@ class Mark(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, 
         verbose_name='Поставлена')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Изменена')
+
+    class Meta:
+        verbose_name = 'Оценка'
+        verbose_name_plural = 'Оценки'
