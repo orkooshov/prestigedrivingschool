@@ -15,6 +15,6 @@ admin.site.register(
     (
         m.Cabinet, m.Group, m.TopicTheory, m.TopicPractice, m.LessonTheory, 
         m.LessonPractice, m.ScheduleTheory, m.SchedulePractice, m.Car,
-        m.CarBrand, m.CarModel, m.Instructor, m.Student
+        m.CarBrand, m.CarModel, m.Instructor, m.Student, m.Mark
     ), DefaultAdmin)
 admin.site.register(m.Tutor, TutorAdmin)
