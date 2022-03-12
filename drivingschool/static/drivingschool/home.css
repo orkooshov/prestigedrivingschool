@@ -1,0 +1,22 @@
+:root{
+    --hello-height: 510px;
+}
+.hello-container{
+    height: var(--hello-height);
+}
+.hello{
+    background: url("/static/drivingschool/autoschool.jpg") no-repeat center center; 
+    -webkit-background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+    background-size: 100% 100%;
+    background-position: left center;
+    background-size: cover;
+    width: 100%;
+    height: var(--hello-height);
+    filter: brightness(0.3);
+    z-index: 0;
+}
+.hello-content{
+    height: var(--hello-height);
+}

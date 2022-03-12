@@ -1,0 +1,32 @@
+
+{% extends 'drivingschool/base.html' %}
+{% load static %}
+
+{% block title %} Автошкола Престиж {% endblock %}
+{% block body %}
+<div class="container-fluid bg-dark">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 text-white">
+      <a href="/" class="d-block text-dark text-decoration-none">
+        <img id="logo" src="{% static 'drivingschool/logo.png' %}" height="48" alt="logo">
+      </a>
+
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="{% url 'home' %}" class="nav-link px-2 link-warning">Главная</a></li>
+        <li><a href="{% url 'pricing' %}" class="nav-link px-2 link-light">Цены</a></li>
+        <li><a href="https://mtek63.jimdofree.com/студентам/" class="nav-link px-2 link-light">Расписание занятий</a></li>
+        <li><a href="{% url 'about_us' %}" class="nav-link px-2 link-light">Об автошколе</a></li>
+        <li><a href="{% url 'contact_us' %}" class="nav-link px-2 link-light">Контакты</a></li>
+      </ul>
+
+      <div class="col-md-3 text-end">
+        <a  href="{% url 'login' %}" class="btn btn-outline-warning me-2">Личный кабинет</a>
+      </div>
+    </header>
+</div>
+{% block content %}{% endblock %}
+<footer class="footer py-3 bg-dark">
+      <div class="container">
+        <a href="#logo" class="btn-link text-warning">Вернуться наверх</a>
+      </div>
+    </footer>
+{% endblock %}

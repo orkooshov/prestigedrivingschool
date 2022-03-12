@@ -1,0 +1,27 @@
+{% extends "drivingschool/base.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'drivingschool/login.css' %}">
+{% endblock %}
+{% block body %}
+<div class="" style="min-width: 200px; max-width: 400px; margin: auto;">
+  <form class="form-signin " method="post">
+    {% csrf_token %}
+    <img class="mb-4 d-block" style="margin: auto;" src="{% static 'drivingschool/logo.png' %}" alt="" width="72"
+      height="72">
+    <h1 class="h3 mb-3 font-weight-normal text-center">Авторизация</h1>
+    <label for="username" class="sr-only mt-3">Имя пользователя</label>
+    <input type="text" class="form-control" placeholder="Введите имя пользователя" required="" name="username"
+      autofocus="">
+    <label for="password" class="sr-only">Пароль</label>
+    <input type="password" class="form-control" placeholder="Введите пароль" name="password" required="">
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> Запомнить меня
+      </label>
+    </div>
+    <button class="btn btn-lg btn-warning btn-block" type="submit">Войти</button>
+  </form>
+</div>
+{% endblock %}
+{% block title %} Авторизация {% endblock %}

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 
@@ -46,6 +47,10 @@ class Group(models.Model):
         verbose_name='Преподаватель')
     name = models.CharField(max_length=31, verbose_name='Название')
 
+    def get_absolute_url(self):
+        return reverse('group_detail', kwargs={'pk': self.pk})
+
+
     class Meta:
         verbose_name = 'Группа'
         verbose_name_plural = 'Группы'
@@ -90,6 +95,7 @@ class LessonTheory(models.Model):
 
 
 class ScheduleTheory(models.Model):
+    # todo
     group = models.ForeignKey(Group, on_delete=models.CASCADE, 
         verbose_name='Группа')
     weekday = models.IntegerField(choices=Weekday.choices, 
@@ -136,6 +142,9 @@ class Car(models.Model):
         verbose_name='Коробка передач')
     state_number = models.CharField(max_length=15, verbose_name='Госномер')
 
+    def get_name(self):
+        return f'{self.brand} {self.model}'
+
     class Meta:
         verbose_name = 'Автомобиль'
         verbose_name_plural = 'Автомобили'
@@ -174,12 +183,16 @@ class Student(models.Model):
     instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE,
         verbose_name='Инструктор')
 
+    def __str__(self) -> str:
+        return str(self.user)
+
     class Meta:
         verbose_name = 'Обучающийся'
         verbose_name_plural = 'Обучающиеся'
 
 
 class SchedulePractice(models.Model):
+    # todo
     weekday = models.IntegerField(choices=Weekday.choices, 
         verbose_name='День недели')
     student = models.ForeignKey(Student, on_delete=models.CASCADE,
@@ -221,3 +234,15 @@ class Mark(models.Model):
     class Meta:
         verbose_name = 'Оценка'
         verbose_name_plural = 'Оценки'
+
+
+class CallApplication(models.Model):
+    name = models.CharField(max_length=40, verbose_name='Имя')
+    phone_number = models.CharField(max_length=20, verbose_name='Телефон')
+
+    def __str__(self) -> str:
+        return f'{self.name} {self.phone_number}'
+
+    class Meta:
+        verbose_name = 'Заявка'
+        verbose_name_plural = 'Заявки'

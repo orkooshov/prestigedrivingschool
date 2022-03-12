@@ -1,0 +1,21 @@
+{% extends 'drivingschool/subbase.html' %}
+
+{% block title %}
+Группа {{ object.name }}
+{% endblock %}
+
+{% block content %}
+<div class="jumbletron p-3 ">
+    <h1 class="display-4">{{ object }}</h1>
+    <p class="lead">Преподаватель: {{ object.tutor.user.get_full_name }}</p>
+    <hr>
+    <h4 class="mb-3">Обучающиеся</h4>
+    <div class="d-flex justify-content-start flex-wrap">
+            {% for tutor in object.student_set.all %}
+            <a href="{{ object.user }}" class="link-dark text-decoration-none bg-warning rounded m-1 p-2 text-nowrap">{{ tutor.user.get_full_name }}</a>
+            {% empty %}
+            <li class="list-group-item text-center">Пусто</li>
+            {% endfor %}
+    </div>
+</div>
+{% endblock %}

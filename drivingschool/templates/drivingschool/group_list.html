@@ -1,0 +1,11 @@
+{% extends 'drivingschool/subbase.html' %}
+
+{% block title %} Список групп {% endblock %}
+
+{% block content %}
+<div class="list-group">
+{% for i in object_list %}
+    <a class="list-group-item list-group-item-action px-5 link-secondary text-decoration-none" href="{{ i.get_absolute_url }}">{{ i.name }}</a>
+{% endfor %}
+</div>
+{% endblock %}
