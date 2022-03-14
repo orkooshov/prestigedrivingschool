@@ -1,3 +1,4 @@
+from re import template
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import (authenticate, login as dj_login,
@@ -14,7 +15,10 @@ from drivingschool.decorators import *
 
 
 def home(request):
-    return render(request, 'drivingschool/home.html')
+    context = {
+        'header_selected_index': 0
+    }
+    return render(request, 'drivingschool/home.html', context)
 
 def logout(request):
     dj_logout(request)
@@ -24,13 +28,22 @@ def whoami(request):
     return HttpResponse(str(request.user))
 
 def about_us(request):
-    return HttpResponse('About Us')
+    context = {
+        'header_selected_index': 2
+    }
+    return render(request, 'drivingschool/about_us.html', context)
 
 def contact_us(request):
-    return HttpResponse('Contact Us')
+    context = {
+        'header_selected_index': 3
+    }
+    return render(request, 'drivingschool/contact_us.html', context)
 
 def pricing(request):
-    return HttpResponse('Pricing')
+    context = {
+        'header_selected_index': 1
+    }
+    return render(request, 'drivingschool/pricing.html', context)
 
 def call_application(request):
     m.CallApplication.objects.create(
@@ -69,19 +82,56 @@ def instructor_view(request):
 
 @login_required
 def student_view(request):
-    context = {
-        'user': request.user,
-        'student': m.Student.objects.filter(user=request.user).first()
-    }
-    return render(request, 'drivingschool/student.html', context)
+    return render(request, 'drivingschool/student.html')
 
 
 class GroupListView(ListView):
     queryset = m.Group.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header_selected_index'] = 0
+        return context
+
 class GroupDetailView(DetailView):
     model = m.Group
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header_selected_index'] = 0
+        return context
 
 class UserDetailView(DetailView):
     model = get_user_model()
     template_name = 'drivingschool/user_detail.html'
+
+
+class SchedulePracticeListView(ListView):
+    model = m.SchedulePractice
+    template_name = 'drivingschool/schedule_practice_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header_selected_index'] = 2
+        return context
+
+
+class ScheduleTheoryListView(ListView):
+    model = m.Group
+    template_name = 'drivingschool/schedule_theory_list.html'
+    context_object_name = 'groups'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header_selected_index'] = 1
+        return context
+
+class InstructorListView(ListView):
+    model = m.Instructor
+    context_object_name = 'instructors'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header_selected_index'] = 3
+        return context

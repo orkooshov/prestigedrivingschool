@@ -1,32 +1,40 @@
 {% extends 'drivingschool/subbase.html' %}
 {% load static %}
 
-{% block head %} <link rel="stylesheet" href="{% static 'drivingschool/student.css' %}"> {% endblock %}
 {% block title %} ЛК Обучающегося {% endblock %}
 {% block content %}
 <div class="welcome">
 
 </div>
 <div class="d-flex flex-wrap position-relative" style="gap: 8px;">
-  <div class="border rounded bg-warning px-5 py-4" >
-    <div class="">Учебная группа</div>
-    <div style="font-weight: bolder;">{{ student.group }}</div>
+  <div >
+    <a class="p-3 btn btn-outline-dark" href="{{ request.user.get_student.group.get_absolute_url }}">
+      <div>Учебная группа</div>
+      <div class="h3">{{ request.user.get_student.group }}</div>
+    </a>
   </div>
-  <div class="border rounded bg-warning" >
+  <div class="">
+    <a class="btn btn-outline-danger p-3" href="{{ request.user.get_student.instructor.user.get_absolute_url }}">
+      <div>Ваш инструктор</div>
+      <div class="h3">{{ request.user.get_student.instructor.user.get_full_name }}</div>
+    </a>
+  </div>
+  <!-- <div class="">
+    <a href="{% url 'schedule_practice_list' %}" class="btn btn-outline-primary">
+      <span >Следующее занятие вождения</span>
+      <p>{{ request.user.get_student.get_next_lesson }}</p>
+    </a>
+  </div> -->
+  <div class="border rounded bg-secondary text-light p-3 text-center" >
     <div class="">Категория прав</div>
-    <div style="font-weight: bolder;">{{ student.license_category }}</div>
+    <div class="h3">{{ request.user.get_student.license_category }}</div>
   </div>
-  <div class="border rounded bg-warning">
-    <span >Следующее занятие вождения</span>
-  </div>
-  <div class="border rounded bg-warning">
-    <div>Ваш инструктор</div>
-    <div  style="font-weight: bolder;">{{ student.instructor.user.get_full_name }}</div>
-  </div>
-  <div class="border rounded bg-warning">
-    <div>Учебное ТС</div>
-    <div style="font-weight: bolder;">{{ student.instructor.car.get_name }}</div>
-    <div style="font-weight: bolder;">{{ student.instructor.car.state_number }}</div>
+  <div style="width: 300px;">
+    <a class="btn btn-outline-success p-3 w-100" href="#">
+      <div>Учебное ТС</div>
+      <div class="h5">{{ request.user.get_student.instructor.car.get_name }}</div>
+      <div class="h5">{{ request.user.get_student.instructor.car.state_number }}</div>
+    </a>
   </div>
 </div>
 {% endblock %}

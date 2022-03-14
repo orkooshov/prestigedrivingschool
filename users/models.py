@@ -26,6 +26,9 @@ class User(AbstractUser):
 
     def is_tutor(self):
         return self.groups.filter(name='Преподаватель').exists()
+    
+    def get_tutor(self):
+        return self.tutor_set.first()
 
     def is_instructor(self):
         return self.groups.filter(name='Инструктор').exists()

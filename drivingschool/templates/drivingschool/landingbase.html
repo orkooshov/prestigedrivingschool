@@ -6,27 +6,23 @@
 {% block body %}
 <div class="container-fluid bg-dark">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 text-white">
-      <a href="/" class="d-block text-dark text-decoration-none">
-        <img id="logo" src="{% static 'drivingschool/logo.png' %}" height="48" alt="logo">
-      </a>
+      <div style="width: 200px;">
+        <a href="/" class="d-block text-dark text-decoration-none" style="width: fit-content;">
+          <img id="logo" src="{% static 'drivingschool/logo.png' %}" height="48" alt="logo">
+        </a>
+      </div>
 
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="{% url 'home' %}" class="nav-link px-2 link-warning">Главная</a></li>
-        <li><a href="{% url 'pricing' %}" class="nav-link px-2 link-light">Цены</a></li>
-        <li><a href="https://mtek63.jimdofree.com/студентам/" class="nav-link px-2 link-light">Расписание занятий</a></li>
-        <li><a href="{% url 'about_us' %}" class="nav-link px-2 link-light">Об автошколе</a></li>
-        <li><a href="{% url 'contact_us' %}" class="nav-link px-2 link-light">Контакты</a></li>
+        <li><a href="{% url 'home' %}" class="nav-link px-2 {% if header_selected_index == 0 %} link-warning {% else %} link-light {% endif %}">Главная</a></li>
+        <li><a href="{% url 'pricing' %}" class="nav-link px-2 {% if header_selected_index == 1 %} link-warning {% else %} link-light {% endif %}">Цены</a></li>
+        <li><a href="{% url 'about_us' %}" class="nav-link px-2 {% if header_selected_index == 2 %} link-warning {% else %} link-light {% endif %}">Об автошколе</a></li>
+        <li><a href="{% url 'contact_us' %}" class="nav-link px-2 {% if header_selected_index == 3 %} link-warning {% else %} link-light {% endif %}">Контакты</a></li>
       </ul>
 
-      <div class="col-md-3 text-end">
+      <div class="col-md-3 text-end" style="width: 200px;">
         <a  href="{% url 'login' %}" class="btn btn-outline-warning me-2">Личный кабинет</a>
       </div>
     </header>
 </div>
 {% block content %}{% endblock %}
-<footer class="footer py-3 bg-dark">
-      <div class="container">
-        <a href="#logo" class="btn-link text-warning">Вернуться наверх</a>
-      </div>
-    </footer>
 {% endblock %}

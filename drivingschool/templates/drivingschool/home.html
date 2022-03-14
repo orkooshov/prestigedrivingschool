@@ -80,23 +80,12 @@
       </div>
     </div>
   </section>
-  <section class="p-4">
-    <div class="container">
-      <p class="display-5 text-center">Записаться на обучение</p>
-      <hr>
-      <form action="{% url 'call_application' %}" method="post" class="d-flex flex-wrap flex-column align-items-center" >
-        {% csrf_token %}
-        <div class="d-flex justify-content-center flex-wrap p-3" style="gap: 8px;">
-          <input type="text" name="name" placeholder="Имя" class="p-1" style="width: 400px;" required>
-          <input type="text" name="phone_number" placeholder="Телефон" class="p-1" required>
-          <input type="submit" class="btn btn-warning" value="Записаться">
-        </div>
-        <label class="d-block">
-          <input type="checkbox" name="allow_processing" required>
-          Согласие на обработку данных
-        </label>
-      </form>
-    </div>
-  </section>
+  {% include 'drivingschool/call_application.html' %}
 </main>
+{% include 'drivingschool/landing_footer.html' %}
+<footer class="footer mt-0 py-3 bg-dark">
+    <div class="container">
+        <a href="#logo" class="btn-link text-warning">Вернуться наверх</a>
+    </div>
+</footer>
 {% endblock %}

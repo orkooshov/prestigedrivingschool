@@ -1,11 +1,61 @@
+import datetime
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from django.urls import reverse
+from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-User = get_user_model()
 
+class Gender(models.TextChoices):
+    MALE = 'M', 'Мужской'
+    FEMALE = 'F', 'Женский'
+
+class User(AbstractUser):
+    middle_name = models.CharField('Отчество', max_length=150, blank=True)
+    phone_number = models.CharField('Телефон', max_length=127, blank=True)
+    gender = models.CharField('Пол', max_length=1,
+        choices=Gender.choices, blank=True)
+    photo = models.ImageField('Фото', default='avatars/default-profile.png', upload_to='avatars/')
+    
+    def get_absolute_url(self):
+        return reverse('user_detail', kwargs={'pk': self.pk})
+    
+    def get_short_name(self) -> str:
+        return f'{self.last_name} {self.first_name}'
+
+    def get_full_name(self) -> str:
+        return f'{self.last_name} {self.first_name} {self.middle_name}'
+
+    def is_tutor(self):
+        return self.groups.filter(name='Преподаватель').exists()
+    
+    def get_tutor(self):
+        tutors = Tutor.objects.filter(user_id=self.pk)
+        return tutors.first()
+
+    def is_instructor(self):
+        return self.groups.filter(name='Инструктор').exists()
+    
+    def get_instructor(self):
+        instructors = Instructor.objects.filter(user_id=self.pk)
+        return instructors.first()
+
+    def is_student(self):
+        return self.groups.filter(name='Обучающийся').exists()
+    
+    def get_student(self):
+        students = Student.objects.filter(user_id=self.pk)
+        return students.first()
+
+    def __str__(self) -> str:
+        return self.username
+
+
+
+userr = get_user_model()
 
 class Weekday(models.IntegerChoices):
     MONDAY = 0, 'Понедельник'
@@ -31,7 +81,7 @@ class Cabinet(models.Model):
 class Tutor(models.Model):
     cabinet = models.ForeignKey(Cabinet, on_delete=models.CASCADE, 
         verbose_name='Кабинет')
-    user = models.OneToOneField(User, on_delete=models.CASCADE, 
+    user = models.OneToOneField(userr, on_delete=models.CASCADE, 
         verbose_name='Пользователь')
 
     class Meta:
@@ -39,7 +89,7 @@ class Tutor(models.Model):
         verbose_name_plural = 'Преподаватели'
 
     def __str__(self) -> str:
-        return f'{self.user.get_full_name()}'
+        return str(self.user)
 
 
 class Group(models.Model):
@@ -94,16 +144,33 @@ class LessonTheory(models.Model):
         verbose_name_plural = 'Занятия теоритические'
 
 
+class SchedulePosition(models.IntegerChoices):
+    FIRST = 1, '9:00 - 10:30'
+    SECOND = 2, '10:40 - 12:10'
+    THIRD = 3, '12:50 - 14:20'
+    FOURTH = 4, '14:30 - 16:00'
+    FIFTH = 5, '16:30 - 18:00'
+    SIXTH = 6, '18:30 - 20:00'
+
+
 class ScheduleTheory(models.Model):
-    # todo
     group = models.ForeignKey(Group, on_delete=models.CASCADE, 
         verbose_name='Группа')
     weekday = models.IntegerField(choices=Weekday.choices, 
         verbose_name='День недели')
+    position = models.IntegerField(choices=SchedulePosition.choices,
+        verbose_name='Время')
+    substitute_tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE,
+        verbose_name='Учитель на замену', blank=True, null=True)
+
+    def __str__(self) -> str:
+        return f'{self.group} {Weekday(self.weekday).label} {self.position}'
 
     class Meta:
         verbose_name = 'Расписание теор. занятий'
         verbose_name_plural = 'Расписания теор. занятий'
+        ordering = ('group', 'weekday', 'position')
+
 
 
 class CarBrand(models.Model):
@@ -154,7 +221,7 @@ class Car(models.Model):
 
 
 class Instructor(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    user = models.OneToOneField(userr, on_delete=models.CASCADE, verbose_name='Пользователь')
     car = models.ForeignKey(Car, on_delete=models.CASCADE, verbose_name='Авто')
 
     class Meta:
@@ -162,7 +229,7 @@ class Instructor(models.Model):
         verbose_name_plural = 'Инструкторы'
 
     def __str__(self) -> str:
-        return self.user.get_full_name()
+        return str(self.user)
 
 
 class LicenseCategory(models.TextChoices):
@@ -174,7 +241,7 @@ class LicenseCategory(models.TextChoices):
 
 
 class Student(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, 
+    user = models.OneToOneField(userr, on_delete=models.CASCADE, 
         verbose_name='Пользователь')
     license_category = models.CharField(choices=LicenseCategory.choices, 
         max_length=1, verbose_name='Категория прав')
@@ -185,6 +252,12 @@ class Student(models.Model):
 
     def __str__(self) -> str:
         return str(self.user)
+    
+    def get_next_lesson(self):
+        # todo
+        schedules = self.schedulepractice_set.all()
+        today_weekday = Weekday(datetime.datetime.today().weekday())
+        return schedules
 
     class Meta:
         verbose_name = 'Обучающийся'
@@ -192,11 +265,16 @@ class Student(models.Model):
 
 
 class SchedulePractice(models.Model):
-    # todo
     weekday = models.IntegerField(choices=Weekday.choices, 
         verbose_name='День недели')
     student = models.ForeignKey(Student, on_delete=models.CASCADE,
         verbose_name='Обучающийся')
+    position = models.IntegerField(verbose_name='Время', 
+        choices=SchedulePosition.choices)
+    
+    def __str__(self) -> str:
+        return f'{self.student} {Weekday(self.weekday).label} \
+            {SchedulePosition(self.position).label}'
     
     class Meta:
         verbose_name = 'Расписание прак. занятий'
@@ -246,3 +324,6 @@ class CallApplication(models.Model):
     class Meta:
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявки'
+
+
+

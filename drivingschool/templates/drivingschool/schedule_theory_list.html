@@ -1,0 +1,33 @@
+{% extends 'drivingschool/subbase.html' %}
+
+{% block title %}
+Расписание групп
+{% endblock %}
+
+{% block content %}
+{% for group in groups %}
+<table class="table table-striped">
+    <tr class="table-warning">
+        <th class="h3 text-center" colspan="3"><a class="link link-dark" href="{% url 'group_detail' group.pk %}">{{ group }}</a></th>
+    </tr>
+    <tr>
+        <th>День недели</th>
+        <th>Время</th>
+        <th>Преподаватель</th>
+    </tr>
+    {% for schedule in group.scheduletheory_set.all %}
+    <tr>
+        <td>{{ schedule.get_weekday_display }}</td>
+        <td>{{ schedule.get_position_display }}</td>
+        {% if schedule.substitute_tutor %}
+        <td><a class="link link-dark" href="{{ schedule.substitute_tutor }}">{{ schedule.substitute_tutor.user.get_short_name }}</a></td>
+        {% else %}
+        <td><a class="link link-dark" href="{{ schedule.group.tutor.user.get_absolute_url }}">{{ schedule.group.tutor.user.get_short_name }}</a></td>
+        {% endif %}
+    </tr>
+    {% empty %}
+    <tr><td colspan="3" class="text-center">Пусто</td></tr>
+    {% endfor %}
+</table>
+    {% endfor %}
+{% endblock %}

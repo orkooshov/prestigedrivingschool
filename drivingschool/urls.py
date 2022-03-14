@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
@@ -19,7 +20,12 @@ urlpatterns = [
     path('call_application/', v.call_application, name='call_application'),
     path('group/<int:pk>/', v.GroupDetailView.as_view(), name='group_detail'),
     path('groups/', v.GroupListView.as_view(), name='group_list'),
-    path('user/<int:pk>/', v.UserDetailView.as_view(), name='user_detail')
+    path('user/<int:pk>/', v.UserDetailView.as_view(), name='user_detail'),
+    path('schedule_theory/', v.ScheduleTheoryListView.as_view(), 
+        name='schedule_theory_list'),
+    path('schedule_practice/', v.SchedulePracticeListView.as_view(), 
+        name='schedule_practice_list'),
+    path('instructors/', v.InstructorListView.as_view(), name='instructor_list'),
 ]
 
 if settings.DEBUG:

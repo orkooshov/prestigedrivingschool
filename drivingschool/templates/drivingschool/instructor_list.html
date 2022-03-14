@@ -1,0 +1,16 @@
+{% extends 'drivingschool/subbase.html' %}
+
+{% block title %}
+Список инструкторов
+{% endblock %}
+
+{% block content %}
+<div class="list-group ">
+    {% for instructor in instructors %}
+    <a class="list-group-item list-group-item-action list-hover text-dark" href="{{ instructor.user.get_absolute_url }}">
+        <img class="rounded-circle " src="{{ instructor.user.photo.url }}" width="48" height="48" alt="avatar">
+        {{ instructor.user.get_full_name }}
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}
