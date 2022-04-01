@@ -1,5 +1,6 @@
 from re import template
-from django.http import HttpResponse
+from typing import Any, Dict
+from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import (authenticate, login as dj_login,
     logout as dj_logout)
@@ -13,6 +14,9 @@ from django.views.generic import (TemplateView, RedirectView, DetailView,
 from drivingschool import models as m
 from drivingschool.decorators import *
 
+def test(request):
+    # raise Http404
+    return render(request, 'drivingschool/edit_personal_data.html')
 
 def home(request):
     context = {
@@ -104,6 +108,12 @@ class GroupDetailView(DetailView):
 class UserDetailView(DetailView):
     model = get_user_model()
     template_name = 'drivingschool/user_detail.html'
+    context_object_name = 'user'
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        print(context['user'].username)
+        return context
 
 
 class SchedulePracticeListView(ListView):

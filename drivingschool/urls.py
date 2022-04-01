@@ -26,6 +26,7 @@ urlpatterns = [
     path('schedule_practice/', v.SchedulePracticeListView.as_view(), 
         name='schedule_practice_list'),
     path('instructors/', v.InstructorListView.as_view(), name='instructor_list'),
+    path('test', v.test),
 ]
 
 if settings.DEBUG:
