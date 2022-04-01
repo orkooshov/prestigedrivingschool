@@ -50,7 +50,7 @@ def call_application(request):
         name=request.POST.get('name').strip(), 
         phone_number = request.POST.get('phone_number').strip()
     )
-    return HttpResponse('Call Application')
+    return HttpResponse('Заявка отправлена')
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
