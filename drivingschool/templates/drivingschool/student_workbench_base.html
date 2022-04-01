@@ -1,44 +1,61 @@
-{% extends 'drivingschool/subbase.html' %}
+{% extends 'drivingschool/base.html' %}
+{% load static %}
 
-{% block title %}
-Пользователь {{ object.get_short_name }}
-{% endblock %}
-
-{% block content %}
-<img src="{{ user.photo.url }}" width="32" height="32" class="rounded-circle me-2" alt="avatar">
-<strong class="text-center">{{ user.get_full_name }}</strong>
-<p>Имя пользователя: {{ user.username }}</p>
-<p>Пол: {{ user.get_gender_display }}</p>
-<p>Номер: {{ user.phone_number }}</p>
-{% if object.is_tutor %} 
-{{ object.get_tutor }}
-{% elif object.is_student %}
-<p>Роль: обучающийся</p>
-<p>Категория прав: {{ object.get_student.license_category }}</p>
-<p>Группа: {{ object.get_student.group }}</p>
-<p>Инструктор: </p>
-<a class="btn" href="{{ object.get_student.instructor.user.get_absolute_url }}">
-    <img class="rounded-circle" width="48" height="48" src="{{ object.get_student.instructor.user.photo.url }}" alt="avatar">
-    {{ object.get_student.instructor.user.get_full_name }}
-</a>
-{% elif object.is_instructor %}
-<p>
-    Авто: {{ object.get_instructor.car.get_name }} 
-    {{ object.get_instructor.car.state_number }}
-</p>
-<p>
-    Коробка передач: {{ object.get_instructor.car.get_transmission_display }}
-</p>
-<p>Обучающиеся: </p>
-<div class="list-group">
-    {% for student in object.get_instructor.student_set.all %}
-    <a href="{{ student.user.get_absolute_url }}" class="list-group-item list-group-item-action">
-        <img class="rounded-circle" src="{{ student.user.photo.url }}" width="48" height="48" alt="avatar">
-        {{ student.user.get_full_name }}
-    </a>
-    {% empty %}
-    <div class="list-group-item text-center">Пусто</div>
-    {% endfor %}
+{% block body %}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark p-1 d-flex justify-content-between">
+  <a class="navbar-brand" href="{% url 'home' %}">
+    <img src="{% static 'drivingschool/logo.png' %}" alt="logo" style="width: 60px;">
+  </a>
+  <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+    <li><a href="{% url 'group_list' %}" class="nav-link px-2 {% if header_selected_index == 0 %} link-warning {% else %} link-light {% endif %}">Группы</a></li>
+    <li><a href="{% url 'schedule_theory_list' %}" class="nav-link px-2 {% if header_selected_index == 1 %} link-warning {% else %} link-light {% endif %}">Расписание занятий</a></li>
+    <li><a href="{% url 'schedule_practice_list' %}" class="nav-link px-2 {% if header_selected_index == 2 %} link-warning {% else %} link-light {% endif %}">Расписание вождения</a></li>
+    <li><a href="{% url 'instructor_list' %}" class="nav-link px-2 {% if header_selected_index == 3 %} link-warning {% else %} link-light {% endif %}">Инструкторы</a></li>
+  </ul>
+  <div class="p-2">
+    <a href="{% url 'logout' %}" class="btn btn-outline-warning">Выйти</a>
+  </div>
+</nav>
+<div class="d-flex align-items-stretch h-100">
+  <div class="d-flex flex-row align-items-stretch">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+      <a href="{{ request.user.get_absolute_url }}" class="pt-1 d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        <img src="{{ request.user.photo.url }}" width="32" height="32" class="rounded-circle me-2" alt="avatar">
+        <strong class="text-center">{{ request.user.get_full_name }}</strong>
+      </a>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <hr>
+        <li class="nav-item">
+          <a href="{% url 'student' %}" class="nav-link link-dark">
+            <span class="material-icons">
+              computer
+            </span>
+            Рабочий стол
+          </a>
+        </li>
+        <li>
+          <a href="http://www.pdd24.com/pdd-onlain" class="nav-link link-dark">
+            <span class="material-icons">school</span>
+            Тестирование
+          </a>
+        </li>
+        <!-- <li>
+          <a href="#" class="nav-link link-dark">
+            <span class="material-icons">description</span>
+            Данные для Госуслуг
+          </a>
+        </li> -->
+        <li>
+          <a href="{% url 'logout' %}" class="nav-link link-dark">
+            <span class="material-icons">logout</span>
+            Выход
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <main class="content p-3 w-100">
+    {% block content %} {% endblock %}
+  </main>
 </div>
-{% endif %}
 {% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'drivingschool/student_workbench_base.html' %}
+
+{% block title %}
+Пользователь {{ object.get_short_name }}
+{% endblock %}
+
+{% block content %}
+<img src="{{ user.photo.url }}" width="32" height="32" class="rounded-circle me-2" alt="avatar">
+<strong class="text-center">{{ user.get_full_name }}</strong>
+<p>Имя пользователя: {{ user.username }}</p>
+<p>Пол: {{ user.get_gender_display }}</p>
+<p>Номер: {{ user.phone_number }}</p>
+{% if object.is_tutor %} 
+{{ object.get_tutor }}
+{% elif object.is_student %}
+<p>Роль: обучающийся</p>
+<p>Категория прав: {{ object.get_student.license_category }}</p>
+<p>Группа: {{ object.get_student.group }}</p>
+<p>Инструктор: </p>
+<a class="btn" href="{{ object.get_student.instructor.user.get_absolute_url }}">
+    <img class="rounded-circle" width="48" height="48" src="{{ object.get_student.instructor.user.photo.url }}" alt="avatar">
+    {{ object.get_student.instructor.user.get_full_name }}
+</a>
+{% elif object.is_instructor %}
+<p>
+    Авто: {{ object.get_instructor.car.get_name }} 
+    {{ object.get_instructor.car.state_number }}
+</p>
+<p>
+    Коробка передач: {{ object.get_instructor.car.get_transmission_display }}
+</p>
+<p>Обучающиеся: </p>
+<div class="list-group">
+    {% for student in object.get_instructor.student_set.all %}
+    <a href="{{ student.user.get_absolute_url }}" class="list-group-item list-group-item-action">
+        <img class="rounded-circle" src="{{ student.user.photo.url }}" width="48" height="48" alt="avatar">
+        {{ student.user.get_full_name }}
+    </a>
+    {% empty %}
+    <div class="list-group-item text-center">Пусто</div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
