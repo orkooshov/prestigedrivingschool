@@ -1,27 +1,37 @@
 import datetime
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.forms import ValidationError
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from django.urls import reverse
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import validate_email
 
 
 class Gender(models.TextChoices):
     MALE = 'M', 'Мужской'
     FEMALE = 'F', 'Женский'
 
+def validate_phone_number(phone):
+    allowed_chars = '+1234567890'
+    for i in phone:
+        if i not in allowed_chars:
+            raise ValidationError('Номер телефона может содержать лишь цифры')
+
 class User(AbstractUser):
     middle_name = models.CharField('Отчество', max_length=150, blank=True)
-    phone_number = models.CharField('Телефон', max_length=127, blank=True)
+    email = models.EmailField(_('email address'), blank=True)
+    phone_number = models.CharField('Телефон', max_length=127, blank=True, 
+        validators=[validate_phone_number])
     gender = models.CharField('Пол', max_length=1,
         choices=Gender.choices, blank=True)
     photo = models.ImageField('Фото', default='avatars/default-profile.png', upload_to='avatars/')
     
     def get_absolute_url(self):
-        return reverse('user_detail', kwargs={'pk': self.pk})
+        return reverse('user_detail', kwargs={'username': self.username})
     
     def get_short_name(self) -> str:
         return f'{self.last_name} {self.first_name}'

@@ -1,0 +1,25 @@
+{% extends 'drivingschool/student_workbench_base.html' %}
+
+{% block title %}
+Редактирование данных
+{% endblock %}
+
+{% block content %}
+<form action="" method="post" enctype="multipart/form-data" class="">
+    {% csrf_token %}
+    <table>
+    {% for f in form %}
+    <tr>
+        <td><label for="{{ f.id_for_label }}">{{ f.label }}</label></td>
+        <td>{{ f }}</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div>{{ f.errors }}</div>
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+    <input type="submit" value="Сохранить" class="mt-2">
+</form>
+{% endblock %}

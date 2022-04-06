@@ -13,10 +13,18 @@ from django.views.generic import (TemplateView, RedirectView, DetailView,
 
 from drivingschool import models as m
 from drivingschool.decorators import *
+from drivingschool.forms import EditPersonalInfoForm
 
-def test(request):
-    # raise Http404
-    return render(request, 'drivingschool/edit_personal_data.html')
+def user_edit(request):
+    form = EditPersonalInfoForm(instance=request.user)
+    if request.method == 'POST':
+        form = EditPersonalInfoForm(data=request.POST, 
+            files=request.FILES, 
+            instance=request.user)
+        if form.is_valid():
+            form.save()
+    return render(request, 'drivingschool/user_edit.html', 
+        {'form': form})
 
 def home(request):
     context = {
@@ -109,6 +117,8 @@ class UserDetailView(DetailView):
     model = get_user_model()
     template_name = 'drivingschool/user_detail.html'
     context_object_name = 'user'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)

@@ -20,13 +20,13 @@ urlpatterns = [
     path('call_application/', v.call_application, name='call_application'),
     path('group/<int:pk>/', v.GroupDetailView.as_view(), name='group_detail'),
     path('groups/', v.GroupListView.as_view(), name='group_list'),
-    path('user/<int:pk>/', v.UserDetailView.as_view(), name='user_detail'),
+    path('user/<slug:username>/', v.UserDetailView.as_view(), name='user_detail'),
     path('schedule_theory/', v.ScheduleTheoryListView.as_view(), 
         name='schedule_theory_list'),
     path('schedule_practice/', v.SchedulePracticeListView.as_view(), 
         name='schedule_practice_list'),
     path('instructors/', v.InstructorListView.as_view(), name='instructor_list'),
-    path('test', v.test),
+    path('user_edit/', v.user_edit, name='user_edit'),
 ]
 
 if settings.DEBUG:
