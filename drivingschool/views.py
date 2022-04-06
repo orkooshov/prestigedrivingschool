@@ -1,4 +1,3 @@
-from re import template
 from typing import Any, Dict
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
@@ -8,12 +7,13 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.views import View
-from django.views.generic import (TemplateView, RedirectView, DetailView, 
-    FormView, CreateView, UpdateView, DeleteView, ListView)
+from django.views.generic import (DetailView, ListView)
+from rest_framework import viewsets
 
 from drivingschool import models as m
 from drivingschool.decorators import *
 from drivingschool.forms import EditPersonalInfoForm
+from drivingschool import serializers as s
 
 def user_edit(request):
     form = EditPersonalInfoForm(instance=request.user)
@@ -58,11 +58,13 @@ def pricing(request):
     return render(request, 'drivingschool/pricing.html', context)
 
 def call_application(request):
-    m.CallApplication.objects.create(
-        name=request.POST.get('name').strip(), 
-        phone_number = request.POST.get('phone_number').strip()
-    )
-    return HttpResponse('Заявка отправлена')
+    if request.method == 'POST':
+        m.CallApplication.objects.create(
+            name=request.POST.get('name').strip(), 
+            phone_number = request.POST.get('phone_number').strip()
+        )
+        return HttpResponse('Заявка отправлена')
+    raise Http404
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
@@ -155,3 +157,45 @@ class InstructorListView(ListView):
         context = super().get_context_data(**kwargs)
         context['header_selected_index'] = 3
         return context
+
+
+
+############# DRF ################
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = s.UserSerializer
+    queryset = m.User.objects.all().order_by('pk')
+
+
+class TutorViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = s.TutorSerializer
+    queryset = m.Tutor.objects.all()
+
+
+class GroupViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = s.GroupSerializer
+    queryset = m.Group.objects.all()
+
+
+class ScheduleTheoryViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = s.ScheduleTheorySerializer
+    queryset = m.ScheduleTheory.objects.all()
+
+
+class SchedulePracticeViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = s.SchedulePracticeSerializer
+    queryset = m.SchedulePractice.objects.all()
+
+
+class CarViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = s.CarSerializer
+    queryset = m.Car.objects.all()
+
+
+class InstructorViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = s.InstructorSerializer
+    queryset = m.Instructor.objects.all()
+
+
+class StudentViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = s.StudentSerializer
+    queryset = m.Student.objects.all()
