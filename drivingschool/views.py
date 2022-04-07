@@ -5,9 +5,9 @@ from django.contrib.auth import (authenticate, login as dj_login,
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from django.views import View
+from django.contrib.auth import forms as auth_forms
 from django.views.generic import (
-    DetailView, ListView, TemplateView, CreateView, UpdateView)
+    DetailView, ListView, TemplateView, CreateView, UpdateView, FormView)
 from django.urls import reverse_lazy
 from rest_framework import viewsets
 
@@ -16,35 +16,28 @@ from drivingschool.decorators import *
 from drivingschool.forms import CustomPasswordChangeForm, EditPersonalInfoForm
 from drivingschool import serializers as s
 from drivingschool import mixins
+from drivingschool import forms
 
 
-def test(request):
-    if request.method == 'GET':
-        return render(request, 'drivingschool/login.html')
-    else:
-        user = authenticate(request,
-                            username=request.POST.get('username', ''),
-                            password=request.POST.get('password', ''))
-        if user is None:
-            return HttpResponse('Неверный логин или пароль')
-        dj_login(request, user)
-        return redirect('student')
-
-
-class LoginView(View):
+class LoginView(TemplateView, mixins.ExtraContextMixin):
     # todo optimize
+    form_class = forms.AuthenticationForm
+    template_name = 'drivingschool/login.html'
+    form = form_class()
+
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('student')
-        return render(request, 'drivingschool/login.html')
+        self.extra_context = {
+            'form': self.form,
+        }
+        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        user = authenticate(request,
-                            username=request.POST.get('username', ''),
-                            password=request.POST.get('password', ''))
-        if user is None:
-            return HttpResponse('Неверный логин или пароль')
-        dj_login(request, user)
+        self.form = self.form_class(request, data=request.POST)
+        if self.form.is_valid():
+            user = authenticate(request, **self.form.cleaned_data)
+            dj_login(request, user)
         return self.get(request)
 
 

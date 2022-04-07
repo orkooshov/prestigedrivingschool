@@ -28,3 +28,16 @@ class EditPersonalInfoForm(forms.ModelForm):
 class CustomPasswordChangeForm(auth_forms.PasswordChangeForm):
     def __init__(self, instance, *args, **kwargs):
         super().__init__(instance, *args, **kwargs)
+
+
+class AuthenticationForm(auth_forms.AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Введите имя пользователя'
+        })
+        self.fields['password'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Введите пароль'
+        })

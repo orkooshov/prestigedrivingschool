@@ -7,11 +7,17 @@
     <img class="mb-4 d-block" style="margin: auto;" src="{% static 'drivingschool/logo.png' %}" alt="" width="72"
       height="72">
     <h1 class="h3 mb-3 font-weight-normal text-center">Авторизация</h1>
-    <label for="username" class="sr-only mt-3">Имя пользователя</label>
-    <input type="text" class="form-control" placeholder="Введите имя пользователя" required="" name="username"
-      autofocus="">
-    <label for="password" class="sr-only">Пароль</label>
-    <input type="password" class="form-control" placeholder="Введите пароль" name="password" required="">
+    {% if form.non_field_errors %}
+    <div class="non-field-errors border border-danger text-danger rounded text-center px-2 py-1">
+      {% for err in form.non_field_errors %}
+      <p class="form-error m-0">{{ err }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <label for="{{ form.username.id_for_label }}" class="sr-only mt-3">{{ form.username.label }}</label>
+    {{ form.username }}
+    <label for="{{ form.password.id_for_label }}" class="sr-only">Пароль</label>
+    {{ form.password }}
     <button class="btn btn-lg btn-warning btn-block mt-2" type="submit">Войти</button>
   </form>
 </div>
