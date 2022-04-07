@@ -20,13 +20,14 @@ from drivingschool import forms
 
 
 class LoginView(TemplateView, mixins.ExtraContextMixin):
-    # todo optimize
     form_class = forms.AuthenticationForm
     template_name = 'drivingschool/login.html'
     form = form_class()
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
+            if request.user.is_superuser:
+                return redirect('/admin')
             return redirect('student')
         self.extra_context = {
             'form': self.form,

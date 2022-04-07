@@ -6,7 +6,10 @@ todo.txt
 *.pyc
 __pycache__
 db.sqlite3
-media
+media/*
+!media/avatars
+media/avatars/*
+!media/avatars/default-profile.png
 
 # Backup files # 
 *.bak 
