@@ -1,12 +1,14 @@
 {% extends 'drivingschool/student_workbench_base.html' %}
 
 {% block title %}
-Пользователь {{ object.get_short_name }}
+Пользователь {{ user.get_short_name }}
 {% endblock %}
 
 {% block content %}
+{% if request.user.username != user.username %}
 <img src="{{ user.photo.url }}" width="32" height="32" class="rounded-circle me-2" alt="avatar">
 <strong class="text-center">{{ user.get_full_name }}</strong>
+{% endif %}
 <table class="table mb-1">
     <tr class="row">
         <td class="col-4">Имя пользователя:</td>
@@ -15,6 +17,10 @@
     <tr class="row">
         <td class="col-4">Почта:</td>
         <td class="col-4">{{ user.email }}</td>
+    </tr>
+    <tr class="row">
+        <td class="col-4">ФИО</td>
+        <td class="col-4">{{ user.get_full_name }}</td>
     </tr>
     <tr class="row">
         <td class="col-4">Пол:</td>
@@ -59,8 +65,8 @@
 </div>
 {% endif %}
 {% if user.is_student %}
-<p class="mb-0">Инструктор: </p>
-<a class="btn px-2 py-0" href="{{ object.get_student.instructor.user.get_absolute_url }}">
+<p class="mb-1">Инструктор: </p>
+<a class="btn border px-2 py-0" href="{{ object.get_student.instructor.user.get_absolute_url }}">
     <img class="rounded-circle" width="48" height="48" src="{{ object.get_student.instructor.user.photo.url }}" alt="avatar">
     {{ object.get_student.instructor.user.get_full_name }}
 </a>

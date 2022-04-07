@@ -1,72 +1,38 @@
-from typing import Any, Dict
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import (authenticate, login as dj_login,
-    logout as dj_logout)
+                                 logout as dj_logout)
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.views import View
-from django.views.generic import (DetailView, ListView)
+from django.views.generic import (
+    DetailView, ListView, TemplateView, CreateView, UpdateView)
+from django.urls import reverse_lazy
 from rest_framework import viewsets
 
 from drivingschool import models as m
 from drivingschool.decorators import *
-from drivingschool.forms import EditPersonalInfoForm
+from drivingschool.forms import CustomPasswordChangeForm, EditPersonalInfoForm
 from drivingschool import serializers as s
+from drivingschool import mixins
 
-def user_edit(request):
-    form = EditPersonalInfoForm(instance=request.user)
-    if request.method == 'POST':
-        form = EditPersonalInfoForm(data=request.POST, 
-            files=request.FILES, 
-            instance=request.user)
-        if form.is_valid():
-            form.save()
-    return render(request, 'drivingschool/user_edit.html', 
-        {'form': form})
 
-def home(request):
-    context = {
-        'header_selected_index': 0
-    }
-    return render(request, 'drivingschool/home.html', context)
+def test(request):
+    if request.method == 'GET':
+        return render(request, 'drivingschool/login.html')
+    else:
+        user = authenticate(request,
+                            username=request.POST.get('username', ''),
+                            password=request.POST.get('password', ''))
+        if user is None:
+            return HttpResponse('Неверный логин или пароль')
+        dj_login(request, user)
+        return redirect('student')
 
-def logout(request):
-    dj_logout(request)
-    return redirect('home')
-
-def whoami(request):
-    return HttpResponse(str(request.user))
-
-def about_us(request):
-    context = {
-        'header_selected_index': 2
-    }
-    return render(request, 'drivingschool/about_us.html', context)
-
-def contact_us(request):
-    context = {
-        'header_selected_index': 3
-    }
-    return render(request, 'drivingschool/contact_us.html', context)
-
-def pricing(request):
-    context = {
-        'header_selected_index': 1
-    }
-    return render(request, 'drivingschool/pricing.html', context)
-
-def call_application(request):
-    if request.method == 'POST':
-        m.CallApplication.objects.create(
-            name=request.POST.get('name').strip(), 
-            phone_number = request.POST.get('phone_number').strip()
-        )
-        return HttpResponse('Заявка отправлена')
-    raise Http404
 
 class LoginView(View):
+    # todo optimize
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('student')
@@ -74,46 +40,97 @@ class LoginView(View):
 
     def post(self, request, *args, **kwargs):
         user = authenticate(request,
-            username=request.POST.get('username', ''),
-            password=request.POST.get('password', ''))
+                            username=request.POST.get('username', ''),
+                            password=request.POST.get('password', ''))
         if user is None:
             return HttpResponse('Неверный логин или пароль')
         dj_login(request, user)
-        if user.is_tutor():
-            return redirect('tutor')
-        if user.is_instructor():
-            return redirect('instructor')
-        if user.is_student():
-            return redirect('student')
-        return HttpResponse('хз')
+        return self.get(request)
+
+
+def logout(request):
+    dj_logout(request)
+    return redirect('home')
+
+
+def whoami(request):
+    return HttpResponse(str(request.user))
+
+
+class PasswordUpdateView(UpdateView):
+    form_class = CustomPasswordChangeForm
+    template_name = 'drivingschool/password_change.html'
+    def get_object(x): return x.request.user
+    success_url = reverse_lazy('home')
+
+
+class UserUpdateView(UpdateView):
+    form_class = EditPersonalInfoForm
+    # fields = '__all__'
+    template_name = 'drivingschool/user_form.html'
+    def get_object(x): return x.request.user
+
+
+class CallApplicationCreateView(CreateView):
+    model = m.CallApplication
+    fields = ['name', 'phone_number']
+    success_url = reverse_lazy('home')
 
 
 def tutor_view(request):
     return HttpResponse('teacher')
 
+
 def instructor_view(request):
-    return HttpResponse('фдываолфдыао')
+    return HttpResponse('instructor')
+
 
 @login_required
 def student_view(request):
     return render(request, 'drivingschool/student.html')
 
 
-class GroupListView(ListView):
+class HomeTemplateView(TemplateView, mixins.ExtraContextMixin):
+    template_name = 'drivingschool/home.html'
+    extra_context = {
+        'header_selected_index': 0
+    }
+
+
+class AboutUsTemplateView(TemplateView, mixins.ExtraContextMixin):
+    template_name = 'drivingschool/about_us.html'
+    extra_context = {
+        'header_selected_index': 2
+    }
+
+
+class ContactUsTemplateView(TemplateView, mixins.ExtraContextMixin):
+    template_name = 'drivingschool/contact_us.html'
+    extra_context = {
+        'header_selected_index': 3
+    }
+
+
+class PricingTemplateView(TemplateView, mixins.ExtraContextMixin):
+    template_name = 'drivingschool/pricing.html'
+    extra_context = {
+        'header_selected_index': 1
+    }
+
+
+class GroupListView(ListView, mixins.ExtraContextMixin):
     queryset = m.Group.objects.all()
+    extra_context = {
+        'header_selected_index': 0
+    }
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['header_selected_index'] = 0
-        return context
 
-class GroupDetailView(DetailView):
+class GroupDetailView(DetailView, mixins.ExtraContextMixin):
     model = m.Group
+    extra_context = {
+        'header_selected_index': 0
+    }
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['header_selected_index'] = 0
-        return context
 
 class UserDetailView(DetailView):
     model = get_user_model()
@@ -122,42 +139,30 @@ class UserDetailView(DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        print(context['user'].username)
-        return context
 
-
-class SchedulePracticeListView(ListView):
+class SchedulePracticeListView(ListView, mixins.ExtraContextMixin):
     model = m.SchedulePractice
     template_name = 'drivingschool/schedule_practice_list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['header_selected_index'] = 2
-        return context
+    extra_context = {
+        'header_selected_index': 2
+    }
 
 
-class ScheduleTheoryListView(ListView):
+class ScheduleTheoryListView(ListView, mixins.ExtraContextMixin):
     model = m.Group
     template_name = 'drivingschool/schedule_theory_list.html'
     context_object_name = 'groups'
+    extra_context = {
+        'header_selected_index': 1
+    }
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['header_selected_index'] = 1
-        return context
 
-class InstructorListView(ListView):
+class InstructorListView(ListView, mixins.ExtraContextMixin):
     model = m.Instructor
     context_object_name = 'instructors'
-
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['header_selected_index'] = 3
-        return context
-
+    extra_context = {
+        'header_selected_index': 3
+    }
 
 
 ############# DRF ################

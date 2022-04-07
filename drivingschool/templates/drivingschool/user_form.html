@@ -9,16 +9,20 @@
     {% csrf_token %}
     <table>
     {% for f in form %}
-    <tr>
-        <td><label for="{{ f.id_for_label }}">{{ f.label }}</label></td>
-        <td>{{ f }}</td>
+    <tr class="row">
+        <td class="col-6"><label for="{{ f.id_for_label }}">{{ f.label }}</label></td>
+        <td class="col-6">{{ f }}</td>
     </tr>
-    <tr>
-        <td colspan="2">
+    <tr class="row">
+        <td colspan="2" class="col-12">
             <div>{{ f.errors }}</div>
         </td>
     </tr>
     {% endfor %}
+    <tr class="row">
+        <td class="col-6">Пароль</td>
+        <td class="col-6"><a href="{% url 'password_change' %}" class="link">Изменить пароль</a></td>
+    </tr>
     </table>
     <input type="submit" value="Сохранить" class="mt-2">
 </form>

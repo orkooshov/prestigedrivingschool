@@ -2,15 +2,18 @@ from tokenize import group
 from rest_framework import serializers
 from drivingschool import models as m
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = m.User
-        fields = ['id', 'username', 'email', 'gender', 'phone_number', 'groups', 'photo']
+        fields = ['id', 'username', 'email', 'gender',
+                  'phone_number', 'groups', 'photo']
 
 
 class TutorSerializer(serializers.ModelSerializer):
     cabinet = serializers.StringRelatedField()
     user = UserSerializer()
+
     class Meta:
         model = m.Tutor
         fields = '__all__'
@@ -18,6 +21,7 @@ class TutorSerializer(serializers.ModelSerializer):
 
 class GroupSerializer(serializers.ModelSerializer):
     tutor = TutorSerializer()
+
     class Meta:
         model = m.Group
         fields = '__all__'
@@ -51,6 +55,7 @@ class CarSerializer(serializers.ModelSerializer):
 class InstructorSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     car = CarSerializer()
+
     class Meta:
         model = m.Instructor
         fields = '__all__'
