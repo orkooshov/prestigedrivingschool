@@ -5,16 +5,13 @@ from django.contrib.auth import (authenticate, login as dj_login,
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from django.contrib.auth import forms as auth_forms
 from django.views.generic import (
     DetailView, ListView, TemplateView, CreateView, UpdateView, FormView)
 from django.urls import reverse_lazy
-from rest_framework import viewsets
 
 from drivingschool import models as m
 from drivingschool.decorators import *
 from drivingschool.forms import CustomPasswordChangeForm, EditPersonalInfoForm
-from drivingschool import serializers as s
 from drivingschool import mixins
 from drivingschool import forms
 
@@ -157,44 +154,3 @@ class InstructorListView(ListView, mixins.ExtraContextMixin):
     extra_context = {
         'header_selected_index': 3
     }
-
-
-############# DRF ################
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = s.UserSerializer
-    queryset = m.User.objects.all().order_by('pk')
-
-
-class TutorViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = s.TutorSerializer
-    queryset = m.Tutor.objects.all()
-
-
-class GroupViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = s.GroupSerializer
-    queryset = m.Group.objects.all()
-
-
-class ScheduleTheoryViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = s.ScheduleTheorySerializer
-    queryset = m.ScheduleTheory.objects.all()
-
-
-class SchedulePracticeViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = s.SchedulePracticeSerializer
-    queryset = m.SchedulePractice.objects.all()
-
-
-class CarViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = s.CarSerializer
-    queryset = m.Car.objects.all()
-
-
-class InstructorViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = s.InstructorSerializer
-    queryset = m.Instructor.objects.all()
-
-
-class StudentViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = s.StudentSerializer
-    queryset = m.Student.objects.all()

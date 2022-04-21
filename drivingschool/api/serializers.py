@@ -1,4 +1,3 @@
-from tokenize import group
 from rest_framework import serializers
 from drivingschool import models as m
 

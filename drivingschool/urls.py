@@ -1,24 +1,9 @@
-from unicodedata import name
-from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
-from rest_framework import routers
+from django.urls import path
 
 from drivingschool import views as v
 
-router = routers.DefaultRouter()
-router.register('user', v.UserViewSet)
-router.register('group', v.GroupViewSet)
-router.register('car', v.CarViewSet)
-router.register('schedule-theory', v.ScheduleTheoryViewSet)
-router.register('schedule-practice', v.SchedulePracticeViewSet)
-router.register('tutor', v.TutorViewSet)
-router.register('instructor', v.InstructorViewSet)
-router.register('student', v.StudentViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls), name='api'),
-    path('api-auth/', include('rest_framework.urls'), name='rest_framework'),
     path('', v.HomeTemplateView.as_view(), name='home'),
     path('login/', v.LoginView.as_view(), name='login'),
     path('logout/', v.logout, name='logout'),
@@ -42,10 +27,3 @@ urlpatterns = [
     path('user-edit/', v.UserUpdateView.as_view(), name='user_edit'),
     path('password-change/', v.PasswordUpdateView.as_view(), name='password_change')
 ]
-
-
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL,
-                          document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
