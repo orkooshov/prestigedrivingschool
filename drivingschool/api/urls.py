@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework.authtoken import views
 
 from drivingschool.api import views as v
 
@@ -15,4 +16,5 @@ router.register('student', v.StudentViewSet)
 
 urlpatterns = [
     path('', include(router.urls), name='api'),
+    path('get-token/', views.obtain_auth_token, name='get_token'),
 ]

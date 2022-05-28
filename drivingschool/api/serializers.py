@@ -1,3 +1,4 @@
+from cProfile import label
 from rest_framework import serializers
 from drivingschool import models as m
 
@@ -28,13 +29,21 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class ScheduleTheorySerializer(serializers.ModelSerializer):
     position = serializers.SerializerMethodField()
-    group = GroupSerializer()
 
     def get_position(self, instance):
         return instance.get_position_display()
 
     class Meta:
         model = m.ScheduleTheory
+        fields = '__all__'
+
+
+class GroupScheduleTheorySerializer(serializers.ModelSerializer):
+    schedule_theory = ScheduleTheorySerializer(
+        many=True, source='scheduletheory_set')
+
+    class Meta:
+        model = m.Group
         fields = '__all__'
 
 
@@ -72,9 +81,12 @@ class StudentSerializer(serializers.ModelSerializer):
 
 class SchedulePracticeSerializer(serializers.ModelSerializer):
     position = serializers.SerializerMethodField()
+    weekday = serializers.SerializerMethodField()
 
     def get_position(self, instance):
         return instance.get_position_display()
+    def get_weekday(self, instance):
+        return instance.get_weekday_display()
 
     class Meta:
         model = m.SchedulePractice

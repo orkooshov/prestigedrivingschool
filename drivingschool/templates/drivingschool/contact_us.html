@@ -2,13 +2,18 @@
 {% load static %}
 
 {% block content %}
-<div class="container-sm h-75 d-flex flex-column justify-content-center">
-    <p class="h1 my-3">Контакты</p>
-    <p class="h5 mb-3">Адрес и телефон офиса</p>
-    <span>г. Москва, ул. Бакунинская, дом 81</span>
-    <span>+7 (999) 999-99-99</span>
+<div class="content p-4">
+    <div class="d-flex flex-row flex-direction-evenly">
+        <div class="container-sm d-flex flex-column justify-content-center">
+            <p class="h1 my-3">Контакты</p>
+            <p class="h5 mb-3">Адрес и телефон офиса</p>
+            <span>г. Москва, ул. Бакунинская, дом 81</span>
+            <span>+7 (999) 999-99-99</span>
+        </div>
+        <div class="">
+            {% include 'drivingschool/map.html' %}
+        </div>
+    </div>
 </div>
-<div class="position-absolute bottom-0 w-100">
-    {% include 'drivingschool/landing_footer.html' %}
-</div>
+{% include 'drivingschool/landing_footer.html' %}
 {% endblock %}

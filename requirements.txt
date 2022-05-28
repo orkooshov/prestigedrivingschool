@@ -2,3 +2,6 @@ django==4.0.2
 Pillow==9.0.1
 djangorestframework==3.13.1
 sorl-thumbnail==12.8.0
+django-debug-toolbar==3.2.4
+django-cors-headers
+psycopg2
