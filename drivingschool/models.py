@@ -264,6 +264,10 @@ class Student(models.Model):
 
     def __str__(self) -> str:
         return str(self.user)
+    
+    @property
+    def user__username(self) -> str:
+        return self.user.username
 
     def get_next_lesson(self):
         # todo
@@ -291,6 +295,7 @@ class SchedulePractice(models.Model):
     class Meta:
         verbose_name = 'Расписание прак. занятий'
         verbose_name_plural = 'Расписания прак. занятий'
+        ordering = ('weekday', 'position', 'student')
 
 
 class LessonPractice(models.Model):

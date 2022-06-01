@@ -1,13 +1,14 @@
-from cProfile import label
 from rest_framework import serializers
 from drivingschool import models as m
 
 
 class UserSerializer(serializers.ModelSerializer):
+    lookup_field = 'slug'
+
     class Meta:
         model = m.User
-        fields = ['id', 'username', 'email', 'gender',
-                  'phone_number', 'groups', 'photo']
+        fields = ('id', 'username', 'first_name', 'last_name', 'middle_name', 
+            'email', 'gender', 'phone_number', 'photo')
 
 
 class TutorSerializer(serializers.ModelSerializer):
@@ -29,13 +30,18 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class ScheduleTheorySerializer(serializers.ModelSerializer):
     position = serializers.SerializerMethodField()
+    substitute_tutor = TutorSerializer()
+    weekday = serializers.SerializerMethodField()
 
     def get_position(self, instance):
         return instance.get_position_display()
 
+    def get_weekday(self, instance):
+        return instance.get_weekday_display()
+
     class Meta:
         model = m.ScheduleTheory
-        fields = '__all__'
+        exclude = ('group',)
 
 
 class GroupScheduleTheorySerializer(serializers.ModelSerializer):
@@ -81,13 +87,22 @@ class StudentSerializer(serializers.ModelSerializer):
 
 class SchedulePracticeSerializer(serializers.ModelSerializer):
     position = serializers.SerializerMethodField()
-    weekday = serializers.SerializerMethodField()
+    weekday = serializers.CharField(source='get_weekday_display')
+    student = serializers.CharField(source='student.user.username')
 
     def get_position(self, instance):
         return instance.get_position_display()
-    def get_weekday(self, instance):
-        return instance.get_weekday_display()
 
     class Meta:
         model = m.SchedulePractice
         fields = '__all__'
+
+
+class SchedulePracticeStudentSerializer(serializers.ModelSerializer):
+    schedule_practice = SchedulePracticeSerializer(
+        source='schedulepractice_set', many=True)
+    student = serializers.CharField(source='user__username')
+
+    class Meta:
+        model = m.Student
+        fields = ('student', 'schedule_practice', )

@@ -6,10 +6,11 @@ from drivingschool.api import views as v
 
 router = routers.DefaultRouter()
 router.register('user', v.UserViewSet)
-router.register('group', v.GroupViewSet)
+router.register('group', v.GroupViewSet, 'group')
 router.register('car', v.CarViewSet)
 router.register('schedule-theory', v.ScheduleTheoryViewSet)
-router.register('schedule-practice', v.SchedulePracticeViewSet)
+router.register('schedule-practice', v.SchedulePracticeStudentViewSet,
+    'schedule_practice')
 router.register('tutor', v.TutorViewSet)
 router.register('instructor', v.InstructorViewSet)
 router.register('student', v.StudentViewSet)

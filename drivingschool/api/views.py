@@ -9,7 +9,8 @@ from drivingschool.api import serializers as s
 from drivingschool import models as m
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
+    lookup_field = 'username'
     permission_classes = [IsAuthenticated]
     serializer_class = s.UserSerializer
     queryset = m.User.objects.all().order_by('pk')
@@ -27,22 +28,17 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = m.Group.objects.all()
 
 
-# class ScheduleTheoryViewSet(viewsets.ReadOnlyModelViewSet):
-#     permission_classes = [IsAuthenticated]
-#     serializer_class = s.ScheduleTheorySerializer
-#     queryset = m.ScheduleTheory.objects.all()
-
-
 class ScheduleTheoryViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = s.GroupScheduleTheorySerializer
     queryset = m.Group.objects.all()
 
 
-class SchedulePracticeViewSet(viewsets.ReadOnlyModelViewSet):
+class SchedulePracticeStudentViewSet(viewsets.ReadOnlyModelViewSet):
+    lookup_field = 'user__username'
     permission_classes = [IsAuthenticated]
-    serializer_class = s.SchedulePracticeSerializer
-    queryset = m.SchedulePractice.objects.all()
+    serializer_class = s.SchedulePracticeStudentSerializer
+    queryset = m.Student.objects.all().select_related('user')
 
 
 class CarViewSet(viewsets.ReadOnlyModelViewSet):
@@ -58,6 +54,7 @@ class InstructorViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class StudentViewSet(viewsets.ReadOnlyModelViewSet):
+    lookup_field = 'user__username'
     permission_classes = [IsAuthenticated]
     serializer_class = s.StudentSerializer
-    queryset = m.Student.objects.all()
+    queryset = m.Student.objects.all().select_related('user')
