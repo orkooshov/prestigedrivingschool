@@ -57,7 +57,6 @@ class PasswordUpdateView(UpdateView):
 
 class UserUpdateView(UpdateView):
     form_class = EditPersonalInfoForm
-    # fields = '__all__'
     template_name = 'drivingschool/user_form.html'
     def get_object(x): return x.request.user
 
