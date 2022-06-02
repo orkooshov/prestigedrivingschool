@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from django.contrib.auth import password_validation
+
 from drivingschool import models as m
 
 
@@ -9,6 +11,30 @@ class UserSerializer(serializers.ModelSerializer):
         model = m.User
         fields = ('id', 'username', 'first_name', 'last_name', 'middle_name', 
             'email', 'gender', 'phone_number', 'photo')
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+    def valdate_old_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError(
+                'Your old password was entered incorrectly. Please enter it again.'
+            )
+        return value
+    
+    def validate(self, data):
+        password_validation.validate_password(data['new_password'], self.context['request'].user)
+        return data
+
+    def save(self, **kwargs):
+        password = self.validated_data['new_password']
+        user = self.context['request'].user
+        user.set_password(password)
+        user.save()
+        return user
 
 
 class TutorSerializer(serializers.ModelSerializer):
