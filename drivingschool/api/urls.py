@@ -18,4 +18,5 @@ router.register('student', v.StudentViewSet)
 urlpatterns = [
     path('', include(router.urls), name='api'),
     path('get-token/', views.obtain_auth_token, name='get_token'),
+    path('change-password/', v.ChangePasswordView.as_view())
 ]
