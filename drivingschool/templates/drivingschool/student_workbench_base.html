@@ -3,8 +3,8 @@
 
 {% block body %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark p-1 d-flex justify-content-between">
-  <a class="navbar-brand" href="{% url 'home' %}">
-    <img src="{% static 'drivingschool/logo.png' %}" alt="logo" style="width: 60px;">
+  <a class="navbar-brand mx-3" href="{% url 'home' %}">
+    <img src="{% static 'drivingschool/logo.png' %}" class="ml-4 pl-4" alt="logo" style="width: 40px;">
   </a>
   <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
     <li><a href="{% url 'group_list' %}" class="nav-link px-2 {% if header_selected_index == 0 %} link-warning {% else %} link-light {% endif %}">Группы</a></li>

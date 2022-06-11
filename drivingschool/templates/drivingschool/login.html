@@ -1,7 +1,7 @@
 {% extends "drivingschool/base.html" %}
 {% load static %}
 {% block body %}
-<div class="" style="min-width: 200px; max-width: 400px; margin: auto;">
+<div class="pt-5" style="min-width: 200px; max-width: 400px; margin: auto;">
   <form class="form-signin " method="post">
     {% csrf_token %}
     <img class="mb-4 d-block" style="margin: auto;" src="{% static 'drivingschool/logo.png' %}" alt="" width="72"
