@@ -74,6 +74,7 @@ def tutor_view(request):
 
 
 def get_report(request):
+    gen_report()
     report_path = (settings.BASE_DIR) / 'table.docx'
     with open(report_path, 'rb') as test_file:
         response = HttpResponse(content=test_file)
