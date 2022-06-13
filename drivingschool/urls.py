@@ -25,5 +25,6 @@ urlpatterns = [
          name='schedule_practice_list'),
     path('instructors/', v.InstructorListView.as_view(), name='instructor_list'),
     path('user-edit/', v.UserUpdateView.as_view(), name='user_edit'),
-    path('password-change/', v.PasswordUpdateView.as_view(), name='password_change')
+    path('password-change/', v.PasswordUpdateView.as_view(), name='password_change'),
+    path('report-theory/', v.get_report, name='report_theory')
 ]

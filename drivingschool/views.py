@@ -8,12 +8,14 @@ from django.contrib.auth import get_user_model
 from django.views.generic import (
     DetailView, ListView, TemplateView, CreateView, UpdateView, FormView)
 from django.urls import reverse_lazy
+from django.conf import settings
 
 from drivingschool import models as m
 from drivingschool.decorators import *
 from drivingschool.forms import CustomPasswordChangeForm, EditPersonalInfoForm
 from drivingschool import mixins
 from drivingschool import forms
+from drivingschool.utils import gen_report
 
 
 class LoginView(TemplateView, mixins.ExtraContextMixin):
@@ -69,6 +71,15 @@ class CallApplicationCreateView(CreateView):
 
 def tutor_view(request):
     return HttpResponse('teacher')
+
+
+def get_report(request):
+    report_path = (settings.BASE_DIR) / 'table.docx'
+    with open(report_path, 'rb') as test_file:
+        response = HttpResponse(content=test_file)
+    response['Content-Type'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    response['Content-Disposition'] = 'attachment; filename=otchet.docx'
+    return response
 
 
 def instructor_view(request):

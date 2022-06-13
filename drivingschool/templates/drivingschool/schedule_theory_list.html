@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block content %}
+<div class="container d-flex justify-content-end mb-2">
+    <a href="{% url 'report_theory' %}" class="link link-danger">Отчет</a>
+</div>
 {% for group in groups %}
 <table class="table table-striped">
     <tr class="table-warning">
