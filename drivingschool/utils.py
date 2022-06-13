@@ -20,9 +20,10 @@ def gen_report():
             table.cell(i, 1).text = '---'
             table.cell(i, 2).text = '---'
 
-        for i, schedule in enumerate(group.scheduletheory_set.all(), 1):
-            table.cell(i, 0).text = schedule.get_weekday_display()
-            table.cell(i, 1).text = schedule.get_position_display()
-            table.cell(i, 2).text = schedule.substitute_tutor if schedule.substitute_tutor else '---'
+        for schedule in group.scheduletheory_set.all():
+            row = schedule.weekday + 1
+            table.cell(row, 0).text = schedule.get_weekday_display()
+            table.cell(row, 1).text = schedule.get_position_display()
+            table.cell(row, 2).text = schedule.substitute_tutor.user.get_short_name() if schedule.substitute_tutor else group.tutor.user.get_short_name()
 
     doc.save(settings.BASE_DIR / 'table.docx')
