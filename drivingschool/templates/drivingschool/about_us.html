@@ -1,0 +1,26 @@
+{% extends 'drivingschool/landingbase.html' %}
+{% load static %}
+
+{% block title %}
+Об автошколе
+{% endblock %}
+
+{% block content %}
+<div class="bg-white py-4 text-dark">
+    <div class="container py-4">
+        <h2>Наши преимущества</h2>
+        <ul style="list-style-type: '\2014';">
+            <li><span style="padding-left: 10px;">Наша автошкола 10.09.2014г. прошла аттестационную комиссию Главным Управлением ГИБДД на соответствие новым требованиям!</span></li>
+            <li><span style="padding-left: 10px;">Лицензия на образовательную деятельность.</span></li>
+            <li><span style="padding-left: 10px;">Наши преподаватели теоретического курса - специалисты, имеющие высшее образование, прошедшие обучение и аккредитацию в ГИБДД.</span></li>
+            <li><span style="padding-left: 10px;">Наши учебные автомобили оборудованы дополнительными педалями, которые оформлены в регистрационных документах на автомобиль.</span></li>
+        </ul>
+    </div>
+</div>
+<div>
+
+</div>
+<div class="py-4 bg-light">
+    {% include 'drivingschool/call_application.html' %}
+</div>
+{% endblock %} 

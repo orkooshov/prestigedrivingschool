@@ -1,0 +1,33 @@
+{% extends 'drivingschool/landingbase.html' %}
+{% load static %}
+
+{% block title %}
+Цены
+{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+    <h3 class="display-6">Цены</h3>
+    <div class="d-flex justify-content-evenly">
+        <div class="card p-3" style="width: 300px;">
+            <img class="card-img-top" src="{% static 'drivingschool/car.webp' %}"  alt="car">
+            <hr>
+            <div class="card-body">
+                <p class="card-title h3">Категория B</p>
+                <p class="card-text text-secondary">25 000 рублей</p>
+                <a class="btn btn-primary" href="{% url 'about_us' %}">Подробнее</a>
+            </div>
+        </div>
+        <div class="card p-3" style="width: 300px;">
+            <img class="card-img-top " src="{% static 'drivingschool/motorcycle.webp' %}" alt="car">
+            <hr>
+            <div class="card-body">
+                <p class="card-title h3">Категория A</p>
+                <p class="card-text text-secondary">20 000 рублей</p>
+                <a class="btn btn-primary" href="{% url 'about_us' %}">Подробнее</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} 
