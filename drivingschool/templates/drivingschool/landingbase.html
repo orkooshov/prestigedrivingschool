@@ -1,28 +1,72 @@
-
 {% extends 'drivingschool/base.html' %}
 {% load static %}
 
 {% block title %} Автошкола Престиж {% endblock %}
 {% block body %}
-<div class="container-fluid bg-dark">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 text-white">
-      <div style="width: 200px;">
-        <a href="/" class="d-block text-dark text-decoration-none mx-3" style="width: fit-content;">
-          <img id="logo" src="{% static 'drivingschool/logo.png' %}" height="48" alt="logo">
+<div class="">
+  <header class="container">
+    <div class="row">
+      <div class="py-1 col-6">
+        <a href="/" class="d-block text-dark text-decoration-none mx-3 d-flex align-items-center"
+          style="width: fit-content;">
+          <img id="logo" src="{% static 'drivingschool/logo.png' %}" class="mx-3" height="48" alt="logo">
+          <h4 class="">Автошкола Престиж</h4>
         </a>
       </div>
+      <style>
+        .nav-link {
+          font-size: 20px;
+          display: block;
+        }
 
-      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="{% url 'home' %}" class="nav-link px-2 {% if header_selected_index == 0 %} link-warning {% else %} link-light {% endif %}">Главная</a></li>
-        <li><a href="{% url 'pricing' %}" class="nav-link px-2 {% if header_selected_index == 1 %} link-warning {% else %} link-light {% endif %}">Цены</a></li>
-        <li><a href="{% url 'about_us' %}" class="nav-link px-2 {% if header_selected_index == 2 %} link-warning {% else %} link-light {% endif %}">Об автошколе</a></li>
-        <li><a href="{% url 'contact_us' %}" class="nav-link px-2 {% if header_selected_index == 3 %} link-warning {% else %} link-light {% endif %}">Контакты</a></li>
+        .nav-link:hover {
+          text-decoration: underline var(--bs-blue) 3px;
+        }
+
+        .nav-link_active {
+          text-decoration: underline var(--bs-yellow) 3px;
+          color: black;
+        }
+
+        .nav-link_active:hover {
+          color: inherit;
+        }
+        .social-links {
+          font-size: 24px;
+          margin-right: 12px;
+        }
+      </style>
+      <ul class="col nav d-flex align-items-center">
+        <li><a href="{% url 'home' %}"
+            class="nav-link {% if header_selected_index == 0 %} nav-link_active {% else %} link-dark {% endif %}">Главная</a>
+        </li>
+        <li><a href="{% url 'pricing' %}"
+            class="nav-link {% if header_selected_index == 1 %} nav-link_active {% else %} link-dark {% endif %}">Цены</a>
+        </li>
+        <li><a href="{% url 'about_us' %}"
+            class="nav-link {% if header_selected_index == 2 %} nav-link_active {% else %} link-dark {% endif %}">Об
+            автошколе</a></li>
+        <li><a href="{% url 'contact_us' %}"
+            class="nav-link {% if header_selected_index == 3 %} nav-link_active {% else %} link-dark {% endif %}">Контакты</a>
+        </li>
       </ul>
-
-      <div class="col-md-3 text-end" style="width: 200px;">
-        <a  href="{% url 'login' %}" class="btn btn-outline-warning me-2">Личный кабинет</a>
+    </div>
+  </header>
+  <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2"
+    style="background-color: var(--bs-gray-300);">
+    <div class="container d-flex justify-content-between align-items-center py-1">
+      <p class="m-0">Лицензия 77Л01 №0008254</p>
+      <p class="m-0">+7 (999) 999-99-99</p>
+      <div>
+        <a href="http://t.me/orkooshov" class="social-links"><i class="fa fa-telegram"></i></a>
+        <a href="http://vk.com/orkooshov/" class="social-links"><i class="fa fa-vk"></i></a>
+        <a href="http://fb.com/" class="social-links"><i class="fa fa-facebook"></i></a>
       </div>
-    </header>
+      <p class="m-0">10:00 - 20:00 ПН-ПТ</p>
+      <p class="m-0">orkooshov@gmail.com</p>
+      <a href="{% url 'login' %}" class="btn btn-warning">Личный кабинет</a>
+    </div>
+  </header>
 </div>
 {% block content %}{% endblock %}
 {% endblock %}
