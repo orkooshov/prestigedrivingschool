@@ -7,6 +7,18 @@
 
 {% block content %}
 <div class="bg-white py-4 text-dark">
+    <div class="container d-flex flex-row align-items-center my-4 bg-light rounded">
+        <div class="txt mx-5">
+            <h2>Об автошколе Престиж</h2>
+            <p class="mb-1">
+                Большую часть времени обучения в автошколе тратится на изучение теоретических аспектов правил дорожного движения, основ оказания первой медицинской помощи, азов автомобильного права. Анализируя многолетний опыт работы, специалисты “Престиж”, приняли решение оптимизировать процесс изучения теории. Теперь для учебы в автошколе необходимы компьютер или ноутбук и выход в интернет.
+            </p>
+            <p class="mb-0">По окончании онлайн курса теории сдается внутренний экзамен в автошколе, затем студент допускается к прохождению практической части курса.</p>
+        </div>
+        <div class="img mx-5">
+            <img src="{% static 'drivingschool/ppp.webp' %}" alt="img" height="400">
+        </div>
+    </div>
     <div class="container py-4">
         <h2>Наши преимущества</h2>
         <ul style="list-style-type: '\2014';">
@@ -19,8 +31,5 @@
 </div>
 <div>
 
-</div>
-<div class="py-4 bg-light">
-    {% include 'drivingschool/call_application.html' %}
 </div>
 {% endblock %} 

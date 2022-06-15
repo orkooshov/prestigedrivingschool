@@ -41,53 +41,40 @@
   <link rel="icon" type="image/png" href="{% static 'drivingschool/logo.png' %}">
   {% block head %}
   {% endblock %}
+  <style>
+    .rounded {
+      border-radius: 30px !important;
+    }
+
+    strong {
+      color: var(--bs-orange);
+    }
+
+    ul,
+    li {
+      list-style-type: none;
+    }
+
+    .list-item {
+      width: 30%;
+    }
+  </style>
 </head>
 
-<body class="d-flex flex-column">
+<body class="d-flex flex-column" style="background-color: var(--bs-gray-200);">
   {% block body %}
   {% block content %} {% endblock %}
   {% endblock %}
   {% block footer %}
 
-  <div class="m-5">
-    <div class="container text-center">
-      <h3 class="">С нами можно связаться</h3>
-      <p class="m-0">По будням с 10:00 до 20:00 МСК</p>
-      <br>
-      <div class="d-flex flex-row justify-content-evenly m-4">
-        <div>
-          <strong>+7 (999) 999-99-99</strong>
-          <p class="m-0 text-secondary">Бесплатно по России</p>
+    <footer class="footer bg-dark text-light text-center p-3">
+      <div class="container">
+        <div class="row">
+          <a href="{% static 'contract_sample.pdf' %}" class="link link-warning">Образец договора</a>
         </div>
-        <div>
-          <strong>orkooshov@gmail.com</strong>
-          <p class="m-0 text-secondary">Ответим в течение рабочего дня</p>
-        </div>
-
-        <style>
-          .social-links {
-            font-size: 32px;
-          }
-        </style>
-        <div>
-          <a href="http://t.me/orkooshov" class="social-links"><i class="fa fa-telegram"></i></a>
-          <a href="http://vk.com/orkooshov/" class="social-links"><i class="fa fa-vk"></i></a>
-          <a href="http://fb.com/" class="social-links"><i class="fa fa-facebook"></i></a>
-        </div>
+        <span>2021 - 2022 © ООО Престиж</span>
       </div>
-      <hr>
-      <h3 class="text-center">Заказать звонок</h3>
-      {% include 'drivingschool/call_application.html' %}
-    </div>
-  </div>
-  <footer class="footer bg-dark text-light text-center p-3">
-    <div class="container">
-      <div class="row">
-        <a href="{% static 'contract_sample.pdf' %}" class="link ">Образец договора</a>
-      </div>
-      <span>2021 - 2022 © ООО Престиж</span>
-    </div>
-  </footer>
+    </footer>
   {% endblock %}
 </body>
 

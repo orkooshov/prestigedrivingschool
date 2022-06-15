@@ -3,16 +3,26 @@
 
 {% block content %}
 <div class="content p-4">
-    <div class="d-flex flex-row flex-direction-evenly">
-        <div class="container-sm d-flex flex-column justify-content-center">
-            <p class="h1 my-3">Контакты</p>
-            <p class="h5 mb-3">Адрес и телефон офиса</p>
-            <span>г. Москва, ул. Бакунинская, дом 81</span>
-            <span>+7 (999) 999-99-99</span>
+    <h3 class="text-center mb-5 mt-2">Наши контакты</h3>
+    <div class="container d-flex flex-row justify-content-center mb-5 pb-5">
+        <div class="container-sm d-flex flex-column justify-content-center jumbotron bg-white rounded p-5 mx-5"
+            style="width: 400px;">
+            <p class="h1 mb-3">Связь с нами</p>
+            <p class="h5 mb-3">Телефон и почта</p>
+            <strong class="mb-2">+7 (999) 999-99-99</strong>
+            <strong class="mb-2">orkooshov@gmail.com</strong>
         </div>
-        <div class="">
-            {% include 'drivingschool/map.html' %}
+        <div class="container-sm d-flex flex-column justify-content-center jumbotron bg-white rounded p-5 mx-5"
+            style="width: 400px;">
+            <p class="h1 mb-3">Главный офис</p>
+            <p></p>
+            <strong class="h5">м. Электрозаводская</strong>
+            <strong>г. Москва, ул. Бакунинская, дом 81</strong>
+            <strong>Часы работы: 10:00 - 20:00 пн-пт</strong>
         </div>
     </div>
+    <div class="map rounded overflow-hidden my-4">
+        {% include 'drivingschool/map.html' %}
+    </div>
 </div>
-{% endblock %} 
+{% endblock %}
