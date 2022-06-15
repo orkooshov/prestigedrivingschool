@@ -1,18 +1,12 @@
-<section class="p-4">
-    <div class="container">
-      <p class="display-5 text-center">Обратный звонок</p>
-      <hr>
-      <form action="{% url 'call_application' %}" method="post" class="d-flex flex-wrap flex-column align-items-center" >
-        {% csrf_token %}
-        <div class="d-flex justify-content-center flex-wrap p-3" style="gap: 8px;">
-          <input type="text" name="name" placeholder="Имя" class="p-1" style="width: 400px; opacity: 0.7;;" required>
-          <input type="text" name="phone_number" placeholder="Телефон" class="p-1" style="opacity: 0.7;" required>
-          <input type="submit" class="btn btn-warning" value="Записаться">
-        </div>
-        <label class="d-block">
-          <input type="checkbox" name="allow_processing" required>
-          Согласие на обработку данных
-        </label>
-      </form>
-    </div>
-</section>
+<form action="{% url 'call_application' %}" method="post" class="d-flex flex-wrap flex-column align-items-center">
+  {% csrf_token %}
+  <div class="d-flex justify-content-center flex-wrap p-3" style="gap: 8px;">
+    <input type="text" name="name" placeholder="Имя" class="p-1" style="width: 400px; opacity: 0.7;;" required>
+    <input type="text" name="phone_number" placeholder="Телефон" class="p-1" style="opacity: 0.7;" required>
+    <input type="submit" class="btn btn-warning" value="Записаться">
+  </div>
+  <label class="d-block">
+    <input type="checkbox" name="allow_processing" required>
+    Согласие на обработку данных
+  </label>
+</form>
