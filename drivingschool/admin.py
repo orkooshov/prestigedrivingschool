@@ -49,13 +49,19 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('username', 'email', 'last_name', 'first_name')
     ordering = ('last_name', 'first_name')
 
+class StudentAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'group', 'instructor']
+    search_fields = ('user__username', 'user__email', 'user__phone_number', 'user__first_name', 'user__last_name', 'user__middle_name')
+    list_filter = ('license_category', 'user__gender')
+    ordering = ('user', )
 
 admin.site.register(
     (
         m.Cabinet, m.Group, m.TopicTheory, m.TopicPractice, m.LessonTheory,
         m.LessonPractice, m.ScheduleTheory, m.SchedulePractice, m.Car,
-        m.CarBrand, m.CarModel, m.Student, m.Mark, m.CallApplication
+        m.CarBrand, m.CarModel, m.Mark, m.CallApplication
     ), DefaultAdmin)
+admin.site.register(m.Student, StudentAdmin)
 admin.site.register(m.Tutor, TutorAdmin)
 admin.site.register(m.Instructor, InstructorAdmin)
 admin.site.register(m.User, CustomUserAdmin)
