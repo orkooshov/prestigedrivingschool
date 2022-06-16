@@ -3,9 +3,11 @@
 {% block title %} Список групп {% endblock %}
 
 {% block content %}
-<div class="list-group">
+<div class="list-group ">
 {% for i in object_list %}
-    <a class="list-group-item list-group-item-action text-dark px-4 display-6" href="{{ i.get_absolute_url }}">{{ i.name }}</a>
+    <a class="list-group-item list-group-item-action text-dark display-6 px-5 py-3 mb-1" href="{{ i.get_absolute_url }}" style="border-radius: 20px;"><span class="material-icons">
+adjust
+</span>&nbsp;&nbsp;&nbsp;{{ i.name }}</a>
 {% endfor %}
 </div>
 {% endblock %}

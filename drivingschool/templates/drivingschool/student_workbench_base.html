@@ -17,7 +17,7 @@
     <a href="{% url 'logout' %}" class="btn btn-outline-warning" style="margin-left: 200px;">Выйти</a>
   </div>
 </nav>
-<div class="d-flex align-items-stretch h-100">
+<div class="d-flex align-items-stretch " style="height: 1000%;" >
   <div class="d-flex flex-row align-items-stretch">
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
       <a href="{{ request.user.get_absolute_url }}" class="pt-1 d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -55,7 +55,7 @@
       </ul>
     </div>
   </div>
-  <main class="content p-3 w-100">
+  <main class="content p-3 w-100 pb-3" style="height: fit-content;">
     {% block content %} {% endblock %}
   </main>
 </div>
